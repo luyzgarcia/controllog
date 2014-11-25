@@ -1,0 +1,51 @@
+<div class="table-responsive table-bordered overflow-x ">
+	<%= grid(@registros, :class => 'table_2600') do |g|
+		g.blank_slate  do
+	    	content_tag :div, "Nenhum registro encontrado", class: 'well'
+	  	end
+	  	
+		g.column name: 'Ações' do |option|
+			buffer =  link_to('Editar', edit_redespacho_path(option)) + ' | '
+			buffer += link_to('Excluir', redespacho_path(option), method: :delete, data: {confirm: 'Você tem certeza?'})
+			raw buffer
+		end
+		
+		g.column name: 'Código', attribute: 'id'
+		g.column name: 'Empresa', attribute: 'empresa_id', custom_filter: [:empresa, :to_option] do |registro|
+			registro.empresa.nome if !registro.empresa.nil?
+		end
+		g.column name: 'Remetente', attribute: 'remetente'
+		g.column name: 'Destinatario', attribute: 'destinatario'
+		g.column name: 'Destinatario Cidade', attribute: 'destinatario_cidade'
+		g.column name: 'Valor do frete', attribute: 'valor_frete' do |registro| 
+		 'R$' + registro.valor_frete.to_s
+		end
+		g.column name: 'Valor Redespacho', attribute: 'valor_redespacho'do |registro| 
+		 'R$' + registro.valor_redespacho.to_s
+		end
+		g.column name: 'Valor Comissão', attribute: 'valor_comissao'do |registro| 
+		 'R$' + registro.valor_comissao.to_s
+		end	
+		g.column name: 'Forma de pagamento', attribute: 'forma_pagamento'	
+		g.column name: 'Quantidade (Volume)', attribute: 'volume'
+		g.column name: 'Peso', attribute: 'peso' do |registro|
+			registro.peso.to_s + 'Kg'
+		end
+		#g.column name: 'Fornecedor', attribute: ''
+		g.column name: 'NF Valor', attribute: 'nf_valor' do |registro|
+		  'R$' + registro.nf_valor.to_s
+		end
+		g.column name: 'NF Número', attribute: 'nf_numero'
+		g.column name: 'Data de envio', attribute: 'data_envio' do |registro|
+			registro.data_envio.strftime('%d/%m/%Y') if !registro.data_envio.nil?
+		end
+		g.column name: 'Data de entrega', attribute: 'data_entrega' do |registro|
+			registro.data_entrega.strftime('%d/%m/%Y') if !registro.data_entrega.nil?
+		end
+		g.column name: 'Recebido por', attribute: 'recebido_por'
+		g.column name: 'Jadlog Numero Lista', attribute: 'jadlog_lista_numero'
+		g.column name: 'Jadlog Número de conhecimento', attribute: 'jadlog_conhecimento_numero'
+		
+    end %>
+</div>
+
